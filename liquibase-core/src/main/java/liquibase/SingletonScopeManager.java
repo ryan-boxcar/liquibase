@@ -2,11 +2,11 @@ package liquibase;
 
 public class SingletonScopeManager extends ScopeManager {
 
-    private Scope currentScope;
+    private ThreadLocal<Scope> currentScope = new ThreadLocal<Scope>();
 
     @Override
     public synchronized Scope getCurrentScope() {
-        return currentScope;
+        return currentScope.get();
     }
 
     @Override
@@ -16,6 +16,6 @@ public class SingletonScopeManager extends ScopeManager {
 
     @Override
     protected synchronized void setCurrentScope(Scope scope) {
-        this.currentScope = scope;
+        this.currentScope.set(scope);
     }
 }
